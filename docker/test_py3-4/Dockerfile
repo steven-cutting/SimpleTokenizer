@@ -1,0 +1,11 @@
+FROM python:3.4
+MAINTAINER steven.e.cutting@linux.com
+
+RUN pip install --upgrade pip
+RUN pip install pytest toolz
+
+VOLUME /app
+
+WORKDIR /app
+
+CMD ["/app/docker/test_py2/docker_pytest.sh"]
