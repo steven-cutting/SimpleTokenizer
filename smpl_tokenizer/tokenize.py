@@ -4,13 +4,17 @@ __author_email__ = 'steven.e.cutting@linux.com'
 __created_on__ = '02/06/2016'
 __copyright__ = "smpl_tokenizer Copyright (C) 2015  Steven Cutting"
 
-from itertools import repeat, count, izip
+import sys
+from itertools import repeat, count
 
 import toolz as tlz
 sliding_window_c = tlz.curry(tlz.sliding_window)
 map_c = tlz.curry(tlz.map)
 
 from smpl_tokenizer import utils
+
+if sys.version_info[0] < 3:
+    from itertools import izip as zip
 
 
 @tlz.curry
@@ -49,6 +53,9 @@ tri_gram_counts = gram_counts(tri_gram)
 
 
 def bag_of_words(gramcounts):
+    """
+    Transforms 'gramcounts' into a bag of words and dictionary representation.
+    """
     dictionary = dict()
     bow = []
     for i,gram in enumerate(gramcounts):
