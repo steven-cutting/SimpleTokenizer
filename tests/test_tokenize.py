@@ -129,60 +129,52 @@ def test__bag_of_words(wordcounts, exbow, exdict):
     assert(dict_ == exdict)
 
 
-@pytest.mark.parametrize("string,exbow,exdict,parser",
+@pytest.mark.parametrize("string,excounts,parser",
                          [(extext,
-                           [(0, 20),
-                            (1, 10),
-                            (2, 3),
-                            (3, 1)],
-                           {0: "aaa", 1: "bbb",
-                            2: "ccc", 3: "ddd"},
+                           [("aaa", 20),
+                            ("bbb", 10),
+                            ("ccc", 3),
+                            ("ddd", 1)],
                            tkn.uni_gram),
                           (extext,
-                           [(0, 1),
-                            (1, 19),
-                            (2, 1),
-                            (3, 1),
-                            (4, 9),
-                            (5, 2)],
-                           {0: "bbb_ccc", 1: "aaa_aaa", 2: "ccc_ddd",
-                            3: "aaa_bbb", 4: "bbb_bbb", 5: "ccc_ccc"},
+                           [("aaa_aaa", 19),
+                            ("aaa_bbb", 1),
+                            ("bbb_bbb", 9),
+                            ("bbb_ccc", 1),
+                            ("ccc_ccc", 2),
+                            ("ccc_ddd", 1)],
                            tkn.bi_gram),
                           ])
-def test__text_to_bow(string, exbow, exdict, parser):
+def test__text_to_bow(string, excounts, parser):
     t2bow = tkn.text_to_bow(parser)  # testing ability to curry
     bow, dict_ = t2bow(string)
-    assert(bow == exbow)
-    assert(dict_ == exdict)
+    gram2count = sorted([(dict_[i], c) for i, c in bow], key=tlz.first)
+    assert(gram2count == excounts)
 
 
-@pytest.mark.parametrize("string,exbow,exdict",
+@pytest.mark.parametrize("string,excounts",
                          [(extext,
-                           [(0, 20),
-                            (1, 10),
-                            (2, 3),
-                            (3, 1)],
-                           {0: "aaa", 1: "bbb",
-                            2: "ccc", 3: "ddd"}),
+                           [("aaa", 20),
+                            ("bbb", 10),
+                            ("ccc", 3),
+                            ("ddd", 1)]),
                           ])
-def test__text_to_uni_bow(string, exbow, exdict):
+def test__text_to_uni_bow(string, excounts):
     bow, dict_ = tkn.text_to_uni_bow(string)
-    assert(bow == exbow)
-    assert(dict_ == exdict)
+    gram2count = sorted([(dict_[i], c) for i, c in bow], key=tlz.first)
+    assert(gram2count == excounts)
 
 
-@pytest.mark.parametrize("string,exbow,exdict",
+@pytest.mark.parametrize("string,excounts",
                          [(extext,
-                           [(0, 1),
-                            (1, 19),
-                            (2, 1),
-                            (3, 1),
-                            (4, 9),
-                            (5, 2)],
-                           {0: "bbb_ccc", 1: "aaa_aaa", 2: "ccc_ddd",
-                            3: "aaa_bbb", 4: "bbb_bbb", 5: "ccc_ccc"}),
+                           [("aaa_aaa", 19),
+                            ("aaa_bbb", 1),
+                            ("bbb_bbb", 9),
+                            ("bbb_ccc", 1),
+                            ("ccc_ccc", 2),
+                            ("ccc_ddd", 1)]),
                           ])
-def test__text_to_bi_bow(string, exbow, exdict):
+def test__text_to_bi_bow(string, excounts):
     bow, dict_ = tkn.text_to_bi_bow(string)
-    assert(bow == exbow)
-    assert(dict_ == exdict)
+    gram2count = sorted([(dict_[i], c) for i, c in bow], key=tlz.first)
+    assert(gram2count == excounts)
