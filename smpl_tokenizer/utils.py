@@ -4,12 +4,17 @@ __author_email__ = 'steven.e.cutting@linux.com'
 __created_on__ = '02/06/2016'
 __copyright__ = "smpl_tokenizer Copyright (C) 2015  Steven Cutting"
 
-
+import json
+import os
 import re
 
 import toolz as tlz
 filter_c = tlz.curry(tlz.filter)
 map_c = tlz.curry(tlz.map)
+
+
+with open(os.path.join(os.path.dirname(__file__), 'stopwords.json')) as fp:
+        STOPWORDS = frozenset(json.load(fp)['stopwords'])
 
 
 # ---------------------------
@@ -78,6 +83,13 @@ def filter_longer_than(n, tokenset):
     Filters out tokens that have 'n' characters or more.
     """
     return tlz.filter(lambda tkn: len(tkn) < n, tokenset)
+
+
+def filter_stopwords(tokenset):
+    """
+    Filters out stopwords.
+    """
+    return tlz.filter(lambda tkn: tkn not in STOPWORDS, tokenset)
 
 
 # ---------------------------

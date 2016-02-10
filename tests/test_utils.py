@@ -39,6 +39,18 @@ def test_foo(x, y):
 """
 
 
+def test__stopwords():
+    assert(utils.STOPWORDS)
+
+
+def test__stopwords__2():
+    assert(tlz.pipe(utils.STOPWORDS,
+                    set,
+                    lambda sw: sw.intersection({"the", "and", "or", "has"}),
+                    len,
+                    lambda length: bool(length == 4)))
+
+
 @pytest.mark.parametrize("glue,strings,expected",
                          [("-", ["foo", "bar"], "foo-bar"),
                           ("baz", ["foo", "bar"], "foobazbar"),
@@ -136,6 +148,18 @@ def test__filter_longer_than(tokenset, mintokenlen, count):
                       list,
                       len)
     assert(length == count)
+
+
+@pytest.mark.parametrize("tokenset,count",
+                         [(("the", "and", "or"), 0),
+                          ])
+def test__filter_stopwords(tokenset, count):
+    assert(tlz.pipe(tokenset,
+                    utils.filter_stopwords,
+                    list,
+                    len,
+                    lambda length: length == count,
+                    ))
 
 
 sum_tally_tuples = lambda tpls: reduce_c(lambda x, y: x+y[1], tpls, 0)
