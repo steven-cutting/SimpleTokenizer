@@ -25,6 +25,7 @@ def ngram_tuples(n, string, minlen=3, maxlen=25):
                     utils.filter_whitespace,
                     utils.filter_shorter_than(minlen),
                     utils.filter_longer_than(maxlen),
+                    utils.filter_stopwords,
                     sliding_window_c(n))
 
 

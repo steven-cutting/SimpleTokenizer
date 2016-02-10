@@ -17,6 +17,8 @@ from smpl_tokenizer import tokenize as tkn
                           (1, "foobazbar", [("foobazbar", )]),
                           (1, "foo*bar*baz", [("foo", ), ("bar", ), ("baz", )]),
                           (2, "foo*bar*baz", [("foo", "bar"), ("bar", "baz")]),
+                          (1, "foo-and-where-bar", [("foo", ), ("bar", )]),
+                          (2, "foo-and-where-bar", [("foo", "bar")]),
                           ])
 def test__ngram_tuples(n, string, expected):
     assert(list(tkn.ngram_tuples(n, string)) == expected)
