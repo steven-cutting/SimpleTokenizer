@@ -1,8 +1,8 @@
-FROM python:2.7.11
+FROM python:2.7
 MAINTAINER steven.e.cutting@linux.com
 
 RUN pip install --upgrade pip
-RUN pip install pytest toolz
+RUN pip install pytest toolz pytest-runner
 
 VOLUME /app
 
